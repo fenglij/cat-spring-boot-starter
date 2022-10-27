@@ -1,9 +1,22 @@
 package com.spring.boot.cat.config.client;
 
 import com.dianping.cat.Cat;
+import com.dianping.cat.message.Transaction;
 import com.spring.boot.cat.constants.CatConstantsExt;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 /**
  * 适用于使用feign调用其他SpringCloud微服务的调用链上下文传递场景
@@ -14,15 +27,16 @@ import feign.RequestTemplate;
  * @author fenglijian
  * @date 2022-10-26 09:56
  */
+@Component
 public class CatFeignConfiguration implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
         CatContextImpl catContext = new CatContextImpl();
-        Cat.logRemoteCallClient(catContext,Cat.getManager().getDomain());
-        requestTemplate.header(CatConstantsExt.CAT_HTTP_HEADER_ROOT_MESSAGE_ID,catContext.getProperty(Cat.Context.ROOT));
-        requestTemplate.header(CatConstantsExt.CAT_HTTP_HEADER_PARENT_MESSAGE_ID,catContext.getProperty(Cat.Context.PARENT));
-        requestTemplate.header(CatConstantsExt.CAT_HTTP_HEADER_CHILD_MESSAGE_ID,catContext.getProperty(Cat.Context.CHILD));
+        Cat.logRemoteCallClient(catContext, Cat.getManager().getDomain());
+        requestTemplate.header(CatConstantsExt.CAT_HTTP_HEADER_ROOT_MESSAGE_ID, catContext.getProperty(Cat.Context.ROOT));
+        requestTemplate.header(CatConstantsExt.CAT_HTTP_HEADER_PARENT_MESSAGE_ID, catContext.getProperty(Cat.Context.PARENT));
+        requestTemplate.header(CatConstantsExt.CAT_HTTP_HEADER_CHILD_MESSAGE_ID, catContext.getProperty(Cat.Context.CHILD));
 
     }
 }

@@ -32,8 +32,8 @@ public class CatFilterConfig {
             registration.setFilter(filter);
             registration.addUrlPatterns("/*");
             registration.setName("cat-servlet-filter");
-            registration.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.FORWARD);
-            registration.setOrder(Ordered.HIGHEST_PRECEDENCE + 1);
+            //registration.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.FORWARD);
+            registration.setOrder(1);
             return registration;
         } else {
             CatFilter catFilter = new CatFilter();
