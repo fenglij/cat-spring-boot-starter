@@ -1,22 +1,10 @@
 package com.spring.boot.cat.config.client;
 
 import com.dianping.cat.Cat;
-import com.dianping.cat.message.Transaction;
 import com.spring.boot.cat.constants.CatConstantsExt;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.client.ClientHttpRequestExecution;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 /**
  * 适用于使用feign调用其他SpringCloud微服务的调用链上下文传递场景

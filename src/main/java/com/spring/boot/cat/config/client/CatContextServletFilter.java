@@ -4,10 +4,14 @@ import com.dianping.cat.Cat;
 import com.dianping.cat.CatConstants;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
+import com.spring.boot.cat.config.util.ServletUtil;
+import com.spring.boot.cat.config.wrapper.DefaultHttpServletRequestWrapper;
+import com.spring.boot.cat.config.wrapper.DefaultHttpServletResponseWrapper;
 import com.spring.boot.cat.constants.CatConstantsExt;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -30,7 +34,8 @@ public class CatContextServletFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        //HttpServletRequest request = (HttpServletRequest) servletRequest;
+        DefaultHttpServletRequestWrapper request = new DefaultHttpServletRequestWrapper((HttpServletRequest) servletRequest);
 
         String uri = request.getRequestURI();
 
@@ -48,8 +53,9 @@ public class CatContextServletFilter implements Filter {
         try{
             Cat.logEvent(CatConstantsExt.Type_URL_METHOD, request.getMethod(), Message.SUCCESS,request.getRequestURL().toString());
             Cat.logEvent(CatConstantsExt.Type_URL_CLIENT, request.getRemoteHost());
+            Cat.logEvent(CatConstantsExt.Type_URL_PARAM, ServletUtil.getParameter(request));
 
-            filterChain.doFilter(servletRequest, servletResponse);
+            filterChain.doFilter(request, servletResponse);
 
             t.setStatus(Transaction.SUCCESS);
         }catch (Exception e){
